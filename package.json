@@ -1,0 +1,32 @@
+{
+  "name": "samer-buma-fullstack",
+  "version": "1.0.0",
+  "description": "node, mongodb and react project ",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node server.js --ignore public/",
+    "dev": "webpack -wd",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Damien Shaw",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mongodb": "^3.0.8",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-react": "^7.7.0",
+    "nodemon": "^1.17.4",
+    "webpack": "^4.8.1",
+    "webpack-cli": "^2.1.3"
+  }
+}
