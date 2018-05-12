@@ -21,6 +21,16 @@
   },
   "rules":{
     "object-curly-spacing": ["error", "always"],
-    "no-undef": "error"
+    "react/jsx-curly-spacing": [2, {"when": "always"}],
+    "no-undef": "error",
+    "require-jsdoc": ["error", {
+      "require": {
+          "FunctionDeclaration": true,
+          "MethodDefinition": true,
+          "ClassDeclaration": true,
+          "ArrowFunctionExpression": true,
+          "FunctionExpression": true
+      }
+    }]
   }
 }

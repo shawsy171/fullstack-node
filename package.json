@@ -14,9 +14,11 @@
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "mongodb": "^3.0.8",
+    "node-sass-middleware": "^0.11.0",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
-    "react-dom": "^16.3.2"
+    "react-dom": "^16.3.2",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -27,6 +29,7 @@
     "eslint": "^4.19.1",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-react": "^7.7.0",
+    "json-loader": "^0.5.7",
     "nodemon": "^1.17.4",
     "webpack": "^4.8.1",
     "webpack-cli": "^2.1.3"
