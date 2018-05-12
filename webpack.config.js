@@ -4,8 +4,11 @@ module.exports = {
     path: __dirname + '/public',
     filename: 'bundle.js',
   },
-  modules: {
-    loaders: [
+  resolve: {
+    extensions: ['.js', '.jsx'],
+  },
+  module: {
+    rules: [
       {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',

@@ -1,10 +1,14 @@
 {   
-  "extends": "google",
+  "extends": [
+    "google",
+    "plugin:react/recommended"
+  ],
   "plugins": [
     "react"
   ],
+  "parser": "babel-eslint",
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 7,
     "sourceType": "module",
     "ecmaFeatures": {
         "jsx": true
@@ -12,6 +16,11 @@
   },
   "env": {
     "node": true,
-    "es6": true
-  } 
+    "es6": true,
+    "browser": true
+  },
+  "rules":{
+    "object-curly-spacing": ["error", "always"],
+    "no-undef": "error"
+  }
 }
