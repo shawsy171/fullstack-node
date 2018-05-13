@@ -1,9 +1,9 @@
 import React from 'react';
-import axios from 'axios';
+import PropTypes from 'prop-types';
 
 // components
 import Header from './header';
-import ContestPreview from './ContestPreview';
+import ContestList from './ContestList';
 
 /**
  * App Component
@@ -11,24 +11,11 @@ import ContestPreview from './ContestPreview';
 class App extends React.Component {
   state = {
     pageHeader: 'Home Page',
-    contests: [],
+    contests: this.props.initialContests,
   }
 
-  // static propTypes = {
-  //   contests: PropTypes.array.isRequired,
-  // }
-
-  /**
-   * set contest data
-   */
-  componentWillMount () {
-    axios.get('/api/contests')
-      .then((res) => {
-        this.setState(() => ({
-          contests: res.data.contests,
-        }));
-      })
-      .catch(console.error);
+  static propTypes = {
+    initialContests: PropTypes.array.isRequired,
   }
 
   /**
@@ -41,11 +28,7 @@ class App extends React.Component {
     return (
       <div>
         <Header message="Sections"/>
-        {
-          contests.map((contest) => {
-            return <ContestPreview key={ contest.id } { ...contest }/>;
-          })
-        }
+        <ContestList contests={ contests }/>
       </div>
     );
   }

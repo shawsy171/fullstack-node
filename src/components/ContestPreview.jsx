@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Preview = styled.div`
@@ -20,17 +21,49 @@ const Category = styled.div`
 
 const Contest = styled.div`
   padding: 0.5em;
+  cursor: pointer;
 `;
 
 /**
  * @param { object } contests
  * @return { jsx } ContestPreview
  */
- const ContestPreview = (contests) => (
-  <Preview className="contest-preview">
-    <Category>{ contests.categoryName }</Category>
-    <Contest>{ contests.contestName }</Contest>
-  </Preview>
-);
+class ContestPreview extends React.Component {
+  static propTypes = {
+    categoryName: PropTypes.string.isRequired,
+    contestName: PropTypes.string.isRequired,
+  }
+
+  /**
+  * show
+  */
+  handleContestClick = () => {
+    console.log(this.props.contestName);
+  };
+
+  /**
+   * @return { jsx } Contest Preview
+   */
+  render () {
+    const {
+      categoryName,
+      contestName,
+    } = this.props;
+
+    return (
+      <Preview className="contest-preview">
+        <Category>
+          { categoryName }
+        </Category>
+        <Contest
+          onClick={ this.handleContestClick }>
+          { contestName }
+        </Contest>
+      </Preview>
+    );
+  }
+}
 
 export default ContestPreview;
+
+

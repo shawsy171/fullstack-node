@@ -4,7 +4,8 @@
     "plugin:react/recommended"
   ],
   "plugins": [
-    "react"
+    "react",
+    "babel"
   ],
   "parser": "babel-eslint",
   "parserOptions": {
@@ -36,6 +37,8 @@
       "anonymous": "always",
       "named": "always",
       "asyncArrow": "always"
-    }]
+    }],
+    "no-invalid-this": 0,
+    "indent": ["error", 2]
   }
 }
