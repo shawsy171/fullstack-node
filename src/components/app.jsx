@@ -17,7 +17,6 @@ import * as api from './../services/api';
  */
 class App extends React.Component {
   state = {
-    pageHeader: 'Home Page',
     contests: this.props.initialContests,
     currentContestId: undefined,
   }
@@ -28,6 +27,7 @@ class App extends React.Component {
 
   /**
    * Fetch contest from the database
+   * and Route to url
    * @param { number } contestId
    */
   fetchContest = (contestId) => {
@@ -40,7 +40,6 @@ class App extends React.Component {
       .then((contest) => {
         this.setState(() => (
           {
-            pageHeader: contest.contestName,
             currentContestId: contest.id,
             contests: {
               ...this.state.contests,
@@ -51,19 +50,33 @@ class App extends React.Component {
       });
   };
   /**
+   * @return { object } current contest
+   */
+  currentContest () {
+    return this.state.contests[this.state.currentContestId];
+  }
+
+  /**
+   * @return { string } page header
+   */
+  pageHeader () {
+    return this.state.currentContestId ?
+      this.currentContent().contestName :
+      'Home Page 2';
+  }
+
+  /**
    * show content based on currentContestId
    * @return { jsx } Component
    */
-  currentContent = () => {
+  currentContent () {
     if ( !this.state.currentContestId ) {
       return <ContestList
         contests={ this.state.contests }
         onContestClick={ this.fetchContest }
       />;
     } else {
-      return <Contest
-        { ...this.state.contests[this.state.currentContestId] }
-      />;
+      return <Contest { ...this.currentContest() } />;
     }
   }
 
@@ -72,13 +85,9 @@ class App extends React.Component {
    * @return { jsx } Header Component
    */
   render () {
-    const {
-      pageHeader,
-    } = this.state;
-
     return (
       <div>
-        <Header message={ pageHeader }/>
+        <Header message={ this.pageHeader() }/>
         { this.currentContent() }
       </div>
     );
