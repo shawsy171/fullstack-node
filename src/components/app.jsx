@@ -16,13 +16,10 @@ import * as api from './../services/api';
  * @return { jsx } App Component
  */
 class App extends React.Component {
-  state = {
-    contests: this.props.initialContests,
-    currentContestId: undefined,
-  }
+  state = this.props.initialData;
 
   static propTypes = {
-    initialContests: PropTypes.object.isRequired,
+    initialData: PropTypes.object.isRequired,
   }
 
   /**
@@ -59,10 +56,10 @@ class App extends React.Component {
   /**
    * @return { string } page header
    */
-  pageHeader () {
+  pageHeader = () => {
     return this.state.currentContestId ?
-      this.currentContent().contestName :
-      'Home Page 2';
+      this.currentContest().contestName :
+      'Contests';
   }
 
   /**

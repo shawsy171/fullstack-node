@@ -11,7 +11,7 @@ import App from './components/app';
 axios.get('/api/contests')
   .then((res) => {
     ReactDOM.render(
-      <App initialContests={ res.data.contests }/>,
+      <App initialData={ res.data }/>,
       document.querySelector('[data-reactroot]')
     );
   })

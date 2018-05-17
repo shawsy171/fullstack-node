@@ -16,11 +16,12 @@ server.use(sassMiddleware({
 
 // setup static views
 server.set('view engine', 'ejs');
-
+server.set('views', path.join(__dirname, 'views'));
+server.set('base', '/');
 server.use('/api', apiRouter);
 
 // entry point for the App
-server.get('/', (req, res) => {
+server.get(['/', '/contest/:contestId'], (req, res) => {
   serverRender()
     .then((content) => {
       res.render('index', {
@@ -28,10 +29,14 @@ server.get('/', (req, res) => {
       });
     })
     .catch(console.error);
+  // res.send('Hello world');
+  // res.render('index', {
+  //   content: 'this is content now',
+  // });
 });
 
 server.use(express.static('public'));
-
+// server.use('/public', express.static(path.join(__dirname, 'public')));
 server.listen(config.port, config.host, () => {
   console.info('Listening on Port: ', config.port);
 });
