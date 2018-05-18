@@ -6,15 +6,43 @@ import App from './src/components/App';
 import config from './config';
 
 /**
- * create the react app to be rendered
- * @return {promise} react App rendered to a string
+ * Returns the needed url
+ * @param { number } contestId
+ * @return { string }
  */
-const serverRender = () =>
-  axios.get(`${config.serverUrl}/api/contests`)
+const getApiUrl = (contestId) => contestId ?
+  `${config.serverUrl}/api/contests/${contestId}` :
+  `${config.serverUrl}/api/contests`;
+
+/**
+ * Get a list of contests or a single contest
+ * @param { number } contestId
+ * @param { object } apiData
+ * @return { object }
+ */
+const getInitalId = (contestId, apiData) => {
+  return contestId ?
+    {
+      currentContestId: contestId,
+      contests: {
+        [contestId]: apiData.contest,
+      },
+    } :
+    { contests: apiData.contests };
+};
+
+/**
+ * Create the react app to be rendered
+ * @param { number } contestId
+ * @return { promise } react App rendered to a string
+ */
+const serverRender = (contestId) =>
+  axios.get(getApiUrl(contestId))
     .then((res) => {
-      // console.log(res.data);
+      const initialData = getInitalId(contestId, res.data);
+      console.log('initialData', initialData);
       return ReactDOMServer.renderToString(
-        <App initialData={ res.data }/>
+        <App initialData={ initialData }/>
       );
     });
 

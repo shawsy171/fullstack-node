@@ -46,6 +46,28 @@ class App extends React.Component {
         ));
       });
   };
+
+  /**
+   * Fetch contest list from the database
+   * and Route to url
+   */
+  fetchContestList = () => {
+    pushState(
+      { currentContestId: null },
+      `/`,
+    );
+    api.fetchContestList()
+      .then((contests) => {
+        console.log(contests);
+        this.setState(() => (
+          {
+            currentContestId: null,
+            contests,
+          }
+        ));
+      });
+  };
+
   /**
    * @return { object } current contest
    */
@@ -72,9 +94,11 @@ class App extends React.Component {
         contests={ this.state.contests }
         onContestClick={ this.fetchContest }
       />;
-    } else {
-      return <Contest { ...this.currentContest() } />;
     }
+
+    return <Contest
+      onBackToContests={ this.fetchContestList }
+      { ...this.currentContest() } />;
   }
 
   /**

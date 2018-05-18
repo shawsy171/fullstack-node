@@ -14,17 +14,13 @@ server.use(sassMiddleware({
   dest: path.join(__dirname, 'public'),
 }));
 
-// server.use(webpackDevMiddleware(compiler, {
-//   noInfo: true,
-//   publicPath: '/',
-// }));
-
 // setup static views
 server.set('view engine', 'ejs');
 
 // entry point for the App
 server.get(['/', '/contest/:contestId'], (req, res) => {
-  serverRender()
+  console.log('req', req.params.contestId);
+  serverRender(req.params.contestId)
     .then((content) => {
       res.render('index', {
         content,
@@ -33,6 +29,7 @@ server.get(['/', '/contest/:contestId'], (req, res) => {
     .catch(console.error);
 });
 
+// set api route
 server.use('/api', apiRouter);
 server.use(express.static('public'));
 
