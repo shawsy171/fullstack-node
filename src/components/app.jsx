@@ -23,6 +23,28 @@ class App extends React.Component {
   }
 
   /**
+   * current route state
+   * @param { function } handler
+   */
+  onPopState = (handler) => {
+    window.onpopstate = handler;
+  }
+
+  /**
+   * Inital function
+   */
+  componentWillMount () {
+    this.onPopState((e) => {
+      console.log(e.state);
+      this.setState(() => (
+        {
+          currentContestId: (e.state || {}).currentContestId,
+        }
+      ));
+    });
+  }
+
+  /**
    * Fetch contest from the database
    * and Route to url
    * @param { number } contestId
@@ -99,6 +121,12 @@ class App extends React.Component {
     return <Contest
       onBackToContests={ this.fetchContestList }
       { ...this.currentContest() } />;
+  }
+  /**
+   * clear popstate when component unmounts
+   */
+  componentWillUnmount () {
+    this.onPopState(null);
   }
 
   /**
