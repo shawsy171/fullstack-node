@@ -12,8 +12,9 @@ import * as api from './../services/api';
 
 /**
  * App Component
+ * @param { number } nameId
  * @param { number } contestId
- * @return { jsx } App Component
+ * @return { jsx }
  */
 class App extends React.Component {
   state = this.props.initialData;
@@ -27,7 +28,16 @@ class App extends React.Component {
    * @param { function } handler
    */
   onPopState = (handler) => {
-    window.onpopstate = handler;
+    // let window;
+    console.log('process.env: ', process.env);
+
+    if (!process.env.BROWSER) {
+      // window = {}; // Temporarily define window for server-side
+    }
+
+    if (window !== undefined) {
+      window.onpopstate = handler;
+    }
   }
 
   /**
@@ -35,7 +45,6 @@ class App extends React.Component {
    */
   componentWillMount () {
     this.onPopState((e) => {
-      console.log(e.state);
       this.setState(() => (
         {
           currentContestId: (e.state || {}).currentContestId,
@@ -54,7 +63,6 @@ class App extends React.Component {
       { currentContestId: contestId },
       `/contest/${contestId}`,
     );
-    console.log(contestId);
     api.fetchContest(contestId)
       .then((contest) => {
         this.setState(() => (
@@ -80,7 +88,6 @@ class App extends React.Component {
     );
     api.fetchContestList()
       .then((contests) => {
-        console.log(contests);
         this.setState(() => (
           {
             currentContestId: null,
@@ -91,14 +98,31 @@ class App extends React.Component {
   };
 
   /**
-   * @return { object } current contest
+   * @param { array } nameIds
+   */
+  fetchNames = (nameIds) => {
+    if (nameIds.length === 0) {
+      return;
+    }
+    api.fetchNames(nameIds)
+      .then((names) => {
+        this.setState(() => ({
+          names,
+        }));
+      });
+  }
+
+  /**
+   * current contest from state
+   * @return { object }
    */
   currentContest () {
     return this.state.contests[this.state.currentContestId];
   }
 
   /**
-   * @return { string } page header
+   * Get page header based on current contest
+   * @return { string }
    */
   pageHeader = () => {
     return this.state.currentContestId ?
@@ -120,10 +144,24 @@ class App extends React.Component {
 
     return <Contest
       onBackToContests={ this.fetchContestList }
+      fetchNames={ this.fetchNames }
+      lookupName={ this.lookupName }
       { ...this.currentContest() } />;
   }
+
+  lookupName = (nameId) => {
+    console.log(this.state.names);
+    // console.log(this.state.names[+nameId]);
+    if (!this.state.names || !this.state.names[nameId]) {
+      return {
+        name: '...',
+      };
+    }
+
+    return this.state.names[nameId];
+  }
   /**
-   * clear popstate when component unmounts
+   }* clear popstate when component unmounts
    */
   componentWillUnmount () {
     this.onPopState(null);

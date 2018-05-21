@@ -19,7 +19,6 @@ server.set('view engine', 'ejs');
 
 // entry point for the App
 server.get(['/', '/contest/:contestId'], (req, res) => {
-  console.log('req', req.params.contestId);
   serverRender(req.params.contestId)
     .then((content) => {
       res.render('index', {

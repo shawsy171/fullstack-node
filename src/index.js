@@ -5,7 +5,6 @@ import axios from 'axios';
 import App from './components/app';
 
 const query = window.location.pathname.split('/')[2];
-console.log('query', query);
 
 /**
  * Returns the needed url
@@ -33,7 +32,6 @@ const getInitalData = (contestId, apiData) => {
     { contests: apiData.contests };
 };
 
-console.log(getApiUrl(query));
 /**
  * [data-reactroot] is created by
  * the server side rendering in serverRender.js
@@ -41,7 +39,6 @@ console.log(getApiUrl(query));
 axios.get(getApiUrl(query))
   .then((res) => {
     const initalData = getInitalData(query, res.data);
-    console.log(initalData);
 
     ReactDOM.render(
       <App initialData={ initalData }/>,

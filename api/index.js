@@ -1,35 +1,71 @@
 import express from 'express';
+import {
+  MongoClient,
+} from 'mongodb';
+import assert from 'assert';
+import config from '../config';
 
-import data from './../src/testData';
+let mdb;
 
-const contests = data.contests.reduce((obj, contest) => {
-  obj[contest.id] = contest;
-  return obj;
-}, {});
+MongoClient.connect(config.mongodbUri, (err, client) => {
+  assert.equal(null, err);
+  mdb = client.db('test');
+});
 
 const router = new express.Router();
 
+/**
+ * get all contests
+ */
 router.get('/contests', (req, res) => {
-  res.send({
-    contests: contests,
-  });
+  let contests = {};
+  // get contests from database
+  mdb.collection('contests')
+    .find({})
+    // only get these fields
+    .project({
+      id: 1,
+      contestName: 1,
+      categoryName: 1,
+      description: 1,
+    })
+    .each((err, contest) => {
+      if (!contest) {
+        res.send({ contests });
+        return;
+      }
+      contests[contest.id] = contest;
+    });
 });
 
+/**
+ * get single contest
+ */
 router.get('/contests/:contestId', (req, res) => {
-  let contest = contests[req.params.contestId];
-  contest.description = `Lorem ipsum dolor sit amet, consectetur 
-    adipiscing elit. Vivamus non eleifend erat. 
-    Vivamus luctus erat odio, eu volutpat velit suscipit ut. Phasellus 
-    risus enim, sagittis nec arcu maximus, suscipit 
-    tempor tortor. Nullam sed lectus vitae nisl ultricies mattis eu 
-    sit amet mauris. In nec pellentesque est, id gravida odio. Aenean 
-    ac dapibus metus. Curabitur sed nunc vitae orci dignissim bibendum. 
-    In et ipsum neque. Quisque vehicula sem pulvinar ligula cursus, 
-    ac ultrices purus dictum. Aliquam scelerisque felis vitae nisl 
-    semper rutrum.`;
-  res.send({
-    contest,
-  });
+  const contestId = +req.params.contestId;
+  mdb.collection('contests')
+    .findOne({ id: contestId })
+    .then((contest) => {
+      res.send({ contest });
+    });
+});
+
+/**
+ * Get names from database
+ */
+router.get('/names/:nameIds', (req, res) => {
+  const nameIds = req.params.nameIds.split(',').map(Number);
+  let names = {};
+  // get names from database
+  mdb.collection('names')
+    .find({ id: { $in: nameIds } })
+    .each((err, name) => {
+      if (!name) {
+        res.send({ names });
+        return;
+      }
+      names[name.id] = name;
+    });
 });
 
 export default router;
