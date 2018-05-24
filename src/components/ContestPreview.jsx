@@ -30,7 +30,7 @@ const Contest = styled.div`
  */
 class ContestPreview extends React.Component {
   static propTypes = {
-    id: PropTypes.number.isRequired,
+    _id: PropTypes.string.isRequired,
     categoryName: PropTypes.string.isRequired,
     contestName: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
@@ -40,7 +40,7 @@ class ContestPreview extends React.Component {
   * show
   */
   handleContestClick = () => {
-    this.props.onClick(this.props.id);
+    this.props.onClick(this.props._id);
   };
 
   /**

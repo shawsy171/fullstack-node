@@ -25,7 +25,10 @@ server.get(['/', '/contest/:contestId'], (req, res) => {
         content,
       });
     })
-    .catch(console.error);
+    .catch((error) => {
+      console.error(error.toString());
+      res.status(404).send('Bad Request');
+    });
 });
 
 // set api route

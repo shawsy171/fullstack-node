@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   MongoClient,
+  ObjectID,
 } from 'mongodb';
 import assert from 'assert';
 import config from '../config';
@@ -24,7 +25,6 @@ router.get('/contests', (req, res) => {
     .find({})
     // only get these fields
     .project({
-      id: 1,
       contestName: 1,
       categoryName: 1,
       description: 1,
@@ -34,7 +34,7 @@ router.get('/contests', (req, res) => {
         res.send({ contests });
         return;
       }
-      contests[contest.id] = contest;
+      contests[contest._id] = contest;
     });
 });
 
@@ -42,9 +42,10 @@ router.get('/contests', (req, res) => {
  * get single contest
  */
 router.get('/contests/:contestId', (req, res) => {
-  const contestId = +req.params.contestId;
+  const contestId = ObjectID(req.params.contestId);
+  // console.log(contestId);
   mdb.collection('contests')
-    .findOne({ id: contestId })
+    .findOne({ _id: contestId })
     .then((contest) => {
       res.send({ contest });
     });
@@ -54,17 +55,17 @@ router.get('/contests/:contestId', (req, res) => {
  * Get names from database
  */
 router.get('/names/:nameIds', (req, res) => {
-  const nameIds = req.params.nameIds.split(',').map(Number);
+  const nameIds = req.params.nameIds.split(',').map(ObjectID);
   let names = {};
   // get names from database
   mdb.collection('names')
-    .find({ id: { $in: nameIds } })
+    .find({ _id: { $in: nameIds } })
     .each((err, name) => {
       if (!name) {
         res.send({ names });
         return;
       }
-      names[name.id] = name;
+      names[name._id] = name;
     });
 });
 

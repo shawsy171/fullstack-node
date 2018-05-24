@@ -21,11 +21,12 @@ const getApiUrl = (contestId) => contestId ?
  * @return { object }
  */
 const getInitalId = (contestId, apiData) => {
+  // console.log(apiData);
   return contestId ?
     {
-      currentContestId: contestId,
+      currentContestId: apiData.contest._id,
       contests: {
-        [contestId]: apiData.contest,
+        [apiData.contest._id]: apiData.contest,
       },
     } :
     { contests: apiData.contests };

@@ -29,22 +29,27 @@ class App extends React.Component {
    */
   onPopState = (handler) => {
     // let window;
-    console.log('process.env: ', process.env);
+    console.log('Mounted');
 
     if (!process.env.BROWSER) {
       // window = {}; // Temporarily define window for server-side
     }
 
-    if (window !== undefined) {
-      window.onpopstate = handler;
-    }
+    // if (typeof window === 'undefined') {
+    //   global.window = {};
+    // }
+
+    // if (window !== undefined) {
+    window.onpopstate = handler;
+    // }
   }
 
   /**
    * Inital function
    */
-  componentWillMount () {
+  componentDidMount () {
     this.onPopState((e) => {
+      // console.log(e.state);
       this.setState(() => (
         {
           currentContestId: (e.state || {}).currentContestId,
@@ -67,10 +72,10 @@ class App extends React.Component {
       .then((contest) => {
         this.setState(() => (
           {
-            currentContestId: contest.id,
+            currentContestId: contest._id,
             contests: {
               ...this.state.contests,
-              [contest.id]: contest,
+              [contest._id]: contest,
             },
           }
         ));
@@ -150,7 +155,7 @@ class App extends React.Component {
   }
 
   lookupName = (nameId) => {
-    console.log(this.state.names);
+    // console.log(this.state.names);
     // console.log(this.state.names[+nameId]);
     if (!this.state.names || !this.state.names[nameId]) {
       return {

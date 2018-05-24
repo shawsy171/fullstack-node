@@ -23,7 +23,7 @@ class Contest extends Component {
     description: PropTypes.string.isRequired,
     onBackToContests: PropTypes.func.isRequired,
     fetchNames: PropTypes.func.isRequired,
-    nameIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+    nameIds: PropTypes.arrayOf(PropTypes.string),
     lookupName: PropTypes.func.isRequired,
   }
 
