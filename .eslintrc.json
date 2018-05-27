@@ -39,6 +39,7 @@
       "asyncArrow": "always"
     }],
     "no-invalid-this": 0,
-    "indent": ["error", 2]
+    "indent": ["error", 2],
+    "new-cap": 0
   }
 }

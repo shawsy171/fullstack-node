@@ -1,6 +1,7 @@
 import express from 'express';
 import sassMiddleware from 'node-sass-middleware';
 import path from 'path';
+import bodyParser from 'body-parser';
 
 import config from './config.js';
 import apiRouter from './api/index';
@@ -13,7 +14,8 @@ server.use(sassMiddleware({
   src: path.join(__dirname, 'scss'),
   dest: path.join(__dirname, 'public'),
 }));
-
+// parse the body of post request
+server.use(bodyParser.json());
 // setup static views
 server.set('view engine', 'ejs');
 
