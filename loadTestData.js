@@ -104,7 +104,6 @@ MongoClient.connect(config.mongodbUri, (err, client) => {
     },
     ]).then((response) => {
       console.info('Names', response.insertedCount);
-      client.close();
     });
   });
 });

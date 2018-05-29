@@ -72,6 +72,7 @@ router.get('/names/:nameIds', (req, res) => {
 router.post('/names', (req, res) => {
   const contestId = ObjectID(req.body.contestId);
   const name = req.body.newName;
+  console.log('object', name);
   mdb.collection('names')
     .insertOne({ name })
     .then((result) =>
@@ -81,21 +82,21 @@ router.post('/names', (req, res) => {
           [],
           { $push: { nameIds: result.insertedId } },
           { new: true }
-        ).then((doc) =>
+        ).then((doc) => {
           res.send({
             updatedContest: doc.value,
             newName: { _id: result.insertedId, name },
-          })
-        )
+          });
+        })
     ).catch((error) => {
       console.error(error.toString());
-      // res.status(404).send('Bad Request');
+      res.status(404).send('Bad Request');
     });
-  res.send(req.body);
+  // res.send(req.body);
 });
 
 // {
 //   "newName": "this is a new name",
-//   "contestId": "5b00a7cf1354a740c5b4074d"
+//   "contestId": "5b0d85e59253b9afcb9e44df"
 // }
 export default router;
