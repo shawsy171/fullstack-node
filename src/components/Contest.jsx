@@ -15,16 +15,16 @@ const BackButton = styled.button`
   padding: 10px 8px;
   cursor: pointer;
 `;
-/**
- * Contest
- */
+
 class Contest extends Component {
   static propTypes = {
     description: PropTypes.string.isRequired,
     onBackToContests: PropTypes.func.isRequired,
     fetchNames: PropTypes.func.isRequired,
-    nameIds: PropTypes.arrayOf(PropTypes.number),
+    nameIds: PropTypes.arrayOf(PropTypes.string),
     lookupName: PropTypes.func.isRequired,
+    addName: PropTypes.func.isRequired,
+    _id: PropTypes.string.isRequired,
   }
 
   componentDidMount = () => {
@@ -36,6 +36,12 @@ class Contest extends Component {
      * { ...this.currentContest() } is an individual contest
      */
     this.props.fetchNames(this.props.nameIds);
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.addName(this.newNameInput.value, this.props._id);
+    console.log('handleSubmit', this.newNameInput.value, this.props._id);
   }
 
   /**
@@ -77,15 +83,24 @@ class Contest extends Component {
             <h3 className="panel-title">Propose a New Name</h3>
           </div>
           <div className="panel-body">
-            <form>
+            <form onSubmit={ this.handleSubmit }>
               <div className="input-group">
                 <input
                   type="text"
                   placeholder="New Name Here..."
                   className="form-control"
+                  // ref="newNameInput"
+                  ref={ (input) => {
+                    this.newNameInput = input;
+                  } }
                 />
                 <span className="input-group-btn">
-                  <button type="submit" className="btn btn-info">Sumbit</button>
+                  <button
+                    type="submit"
+                    className="btn btn-info"
+                  >
+                    Sumbit
+                  </button>
                 </span>
               </div>
             </form>

@@ -10,12 +10,6 @@ import Contest from './Contest';
 import { pushState } from './../services/routing';
 import * as api from './../services/api';
 
-/**
- * App Component
- * @param { number } nameId
- * @param { number } contestId
- * @return { jsx }
- */
 class App extends React.Component {
   state = this.props.initialData;
 
@@ -29,7 +23,6 @@ class App extends React.Component {
    */
   onPopState = (handler) => {
     // let window;
-    console.log('Mounted');
 
     if (!process.env.BROWSER) {
       // window = {}; // Temporarily define window for server-side
@@ -49,7 +42,6 @@ class App extends React.Component {
    */
   componentDidMount () {
     this.onPopState((e) => {
-      // console.log(e.state);
       this.setState(() => (
         {
           currentContestId: (e.state || {}).currentContestId,
@@ -135,6 +127,22 @@ class App extends React.Component {
       'Contests';
   }
 
+  addName = (name, contestId) => {
+    api.addName(name, contestId)
+      .then(((res) => {
+        this.setState(() => ({
+          contests: {
+            ...this.state.contests,
+            [res.updatedContest._id]: res.updatedContest,
+          },
+          names: {
+            ...this.state.names,
+            [res.newName._id]: res.newName,
+          },
+        }));
+      }));
+  }
+
   /**
    * show content based on currentContestId
    * @return { jsx } Component
@@ -151,12 +159,11 @@ class App extends React.Component {
       onBackToContests={ this.fetchContestList }
       fetchNames={ this.fetchNames }
       lookupName={ this.lookupName }
+      addName={ this.addName }
       { ...this.currentContest() } />;
   }
 
   lookupName = (nameId) => {
-    // console.log(this.state.names);
-    // console.log(this.state.names[+nameId]);
     if (!this.state.names || !this.state.names[nameId]) {
       return {
         name: '...',
@@ -165,6 +172,7 @@ class App extends React.Component {
 
     return this.state.names[nameId];
   }
+
   /**
    }* clear popstate when component unmounts
    */

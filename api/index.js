@@ -43,7 +43,6 @@ router.get('/contests', (req, res) => {
  */
 router.get('/contests/:contestId', (req, res) => {
   const contestId = ObjectID(req.params.contestId);
-  // console.log(contestId);
   mdb.collection('contests')
     .findOne({ _id: contestId })
     .then((contest) => {
@@ -72,7 +71,6 @@ router.get('/names/:nameIds', (req, res) => {
 router.post('/names', (req, res) => {
   const contestId = ObjectID(req.body.contestId);
   const name = req.body.newName;
-  console.log('object', name);
   mdb.collection('names')
     .insertOne({ name })
     .then((result) =>
